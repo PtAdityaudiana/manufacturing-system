@@ -1,20 +1,41 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\OperatorDashboardController;
+use App\Http\Controllers\ProductionController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
 require __DIR__.'/auth.php';
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/dashboard', function () {
+        if (auth()->user()->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+        return redirect()->route('operator.dashboard');
+    })->name('dashboard');
+
+    //admin
+    Route::middleware(['role:admin'])->group(function () {
+
+        Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
+            ->name('admin.dashboard');
+
+
+    });
+
+    //op
+    Route::middleware(['role:operator'])->group(function () {
+
+        Route::get('/operator/dashboard', [OperatorDashboardController::class, 'index'])
+            ->name('operator.dashboard');
+
+        Route::resource('production', ProductionController::class)
+            ->only(['index', 'create', 'store']);
+    });
+});
