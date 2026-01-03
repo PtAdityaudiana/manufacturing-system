@@ -9,7 +9,7 @@ class ActivityLog extends Model
     protected $fillable = [
         'user_id',
         'action',
-        'performed_at'
+        'description'
     ];
 
     public function user(){

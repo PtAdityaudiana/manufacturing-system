@@ -24,6 +24,24 @@
     @endforeach
 </table>
 
+<h3>Jumlah Stock Bahan Baku</h3>
+<table class="table">
+    <tr>
+        <th>Nama</th>
+        <th>Stok</th>
+        <th>Satuan</th>
+        <th>harga/satuan</th>
+    </tr>
+    @foreach($materials as $material)
+        <tr>
+            <td>{{ $material->name }}</td>
+            <td>{{ $material->stock }}</td>
+            <td>{{ $material->unit }}</td>
+            <td>Rp.{{ $material->price}}</td>
+        </tr>
+    @endforeach
+</table>
+
 <h3>Bahan Baku Hampir Habis</h3>
 <table class="table">
     <tr>
@@ -42,5 +60,19 @@
     @empty
         <tr><td colspan="2">Aman</td></tr>
     @endforelse
+</table>
+
+<h3>Produk Paling Sering Diproduksi</h3>
+<table class="table">
+    <tr>
+        <th>Produk</th>
+        <th>Total</th>
+    </tr>
+    @foreach($topProducts as $row)
+    <tr>
+        <td>{{ $row->product->name }}</td>
+        <td>{{ $row->total }}</td>
+    </tr>
+    @endforeach
 </table>
 @endsection

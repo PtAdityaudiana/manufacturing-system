@@ -3,6 +3,7 @@
 
 @section('content')
 <h1>Operator Dashboard</h1>
+<a href="{{route('production.index')}}">production</a>
 
 <div class="grid">
     <div class="card">
@@ -11,6 +12,21 @@
     </div>
 </div>
 
+<h3>Jumlah Stock Bahan Baku</h3>
+<table class="table">
+    <tr>
+        <th>Nama</th>
+        <th>Stok</th>
+        <th>Satuan</th>
+    </tr>
+    @foreach($materials as $material)
+        <tr>
+            <td>{{ $material->name }}</td>
+            <td>{{ $material->stock }}</td>
+            <td>{{ $material->unit }}</td>
+        </tr>
+    @endforeach
+</table>
 <h3>Produksi Terakhir</h3>
 <table class="table">
     <tr>
@@ -27,17 +43,5 @@
     @endforeach
 </table>
 
-<h3>Produk Paling Sering Diproduksi</h3>
-<table class="table">
-    <tr>
-        <th>Produk</th>
-        <th>Total</th>
-    </tr>
-    @foreach($topProducts as $row)
-    <tr>
-        <td>{{ $row->product->name }}</td>
-        <td>{{ $row->total }}</td>
-    </tr>
-    @endforeach
-</table>
+
 @endsection

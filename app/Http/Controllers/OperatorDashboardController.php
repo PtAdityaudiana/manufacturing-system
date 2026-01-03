@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ProductionOrder;
 use Illuminate\Support\Facades\DB;
+use App\Models\RawMaterial;
 
 
 class OperatorDashboardController extends Controller
@@ -19,20 +20,13 @@ class OperatorDashboardController extends Controller
             ->take(5)
             ->get();
 
-        $topProducts = ProductionOrder::select(
-                'product_id',
-                DB::raw('SUM(qty) as total')
-            )
-            ->groupBy('product_id')
-            ->orderByDesc('total')
-            ->with('product')
-            ->take(5)
-            ->get();
+         // total stok
+        $materials = RawMaterial::all();
 
         return view('operator.dashboard', compact(
             'todayProduction',
             'recentProductions',
-            'topProducts'
+            'materials'
         ));
     }
 }

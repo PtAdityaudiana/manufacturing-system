@@ -18,7 +18,10 @@ class User extends Authenticatable
         'role',
     ];
 
-
+    protected $casts = [
+        'role' => 'string'
+    ];
+    
     protected $hidden = [
         'password',
         'remember_token',

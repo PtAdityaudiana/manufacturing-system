@@ -12,6 +12,7 @@ class RawMaterial extends Model
         'price'
     ];
 
+    protected $appends = ['stock'];
 
    public function boms(){
         return $this->hasMany(Bom::class);
@@ -25,4 +26,17 @@ class RawMaterial extends Model
         return $this->hasMany(StockMovement::class, 'item_id')
                     ->where('item_type', 'raw_material');
    }
+
+   public function getStockAttribute()
+    {
+        $in = $this->stockMovements()
+            ->where('movement_type', 'in')
+            ->sum('qty');
+
+        $out = $this->stockMovements()
+            ->where('movement_type', 'out')
+            ->sum('qty');
+
+        return $in - $out;
+    }
 }

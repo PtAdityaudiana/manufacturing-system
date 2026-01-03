@@ -28,18 +28,31 @@ class AdminDashboardController extends Controller
             ->orderBy('month')
             ->get();
 
-        $lowStockMaterials = RawMaterial::all()->filter(function ($material) {
-            $in = $material->stockMovements()->in()->sum('qty');
-            $out = $material->stockMovements()->out()->sum('qty');
-            return ($in - $out) < 10;
-        });
+         // low stock
+         $lowStockMaterials = RawMaterial::all()
+         ->filter(fn ($material) => $material->stock < 10);
+
+         // total stok
+         $materials = RawMaterial::all();
+
+         $topProducts = ProductionOrder::select(
+            'product_id',
+            DB::raw('SUM(qty) as total')
+        )
+        ->groupBy('product_id')
+        ->orderByDesc('total')
+        ->with('product')
+        ->take(5)
+        ->get();
 
         return view('admin.dashboard', compact(
             'totalProducts',
             'totalMaterials',
             'totalProductionThisMonth',
             'productionChart',
-            'lowStockMaterials'
+            'lowStockMaterials',
+            'materials',
+            'topProducts'
         ));
     }
 }
