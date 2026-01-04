@@ -22,7 +22,18 @@ class ProductionController extends Controller
 
     public function create(){
         $products = Product::all();
-        return view('production.create', compact('products'));
+
+        $selectedProduct = null;
+
+        if (request('product_id')) {
+            $selectedProduct = Product::with('boms.rawMaterial')
+                ->find(request('product_id'));
+        }
+    
+        return view('production.create', compact(
+            'products',
+            'selectedProduct'
+        ));
     }
 
     public function store(Request $request)
@@ -103,5 +114,6 @@ class ProductionController extends Controller
             ->route('production.index')
             ->with('success', 'Order produksi berhasil dibuat dan stok diperbarui.');
     }
+
 
 }

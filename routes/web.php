@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\OperatorDashboardController;
 use App\Http\Controllers\ProductionController;
+use App\Http\Controllers\AdminMasterController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,6 +27,28 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
             ->name('admin.dashboard');
 
+        Route::get('/admin/raw-materials', [AdminMasterController::class, 'rawMaterialIndex'])
+            ->name('admin.raw-materials.index');
+    
+        Route::get('/admin/raw-materials/create', [AdminMasterController::class, 'rawMaterialCreate'])
+            ->name('admin.raw-materials.create');
+    
+        Route::post('/admin/raw-materials', [AdminMasterController::class, 'rawMaterialStore'])
+            ->name('admin.raw-materials.store');
+    
+        Route::post('/admin/raw-materials/{material}/stock', [AdminMasterController::class, 'rawMaterialStock'])
+            ->name('admin.raw-materials.stock');
+    
+        // Product
+        Route::get('/admin/products', [AdminMasterController::class, 'productIndex'])
+            ->name('admin.products.index');
+    
+        Route::get('/admin/products/create', [AdminMasterController::class, 'productCreate'])
+            ->name('admin.products.create');
+    
+        Route::post('/admin/products', [AdminMasterController::class, 'productStore'])
+            ->name('admin.products.store');
+
 
     });
 
@@ -37,5 +60,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::resource('production', ProductionController::class)
             ->only(['index', 'create', 'store']);
+
+
     });
 });

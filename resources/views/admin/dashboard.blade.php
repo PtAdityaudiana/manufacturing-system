@@ -4,13 +4,35 @@
 @section('content')
 <h1>Admin Dashboard</h1>
 
+{{-- SUMMARY CARDS --}}
 <div class="grid">
-    <div class="card">Total Produk<br><b>{{ $totalProducts }}</b></div>
-    <div class="card">Total Bahan Baku<br><b>{{ $totalMaterials }}</b></div>
-    <div class="card">Produksi Bulan Ini<br><b>{{ $totalProductionThisMonth }}</b></div>
+    <a href="{{ route('admin.products.create') }}" class="card-link">
+        <div class="card">
+            Total Produk<br>
+            <b>{{ $totalProducts }}</b>
+        </div>
+    </a>
+
+    <a href="{{ route('admin.raw-materials.index') }}" class="card-link">
+        <div class="card">
+            Total Bahan Baku<br>
+            <b>{{ $totalMaterials }}</b>
+        </div>
+    </a>
+
+    <a href="{{ route('admin.dashboard') }}" class="card-link">
+        <div class="card">
+            Produksi Bulan Ini<br>
+            <b>{{ $totalProductionThisMonth }}</b>
+        </div>
+    </a>
 </div>
 
+<hr>
+
+{{-- PRODUKSI PER BULAN --}}
 <h3>Produksi per Bulan ({{ date('Y') }})</h3>
+
 <table class="table">
     <tr>
         <th>Bulan</th>
@@ -18,51 +40,19 @@
     </tr>
     @foreach($productionChart as $row)
     <tr>
-        <td>{{ $row->month }}</td>
+        <td>Bulan {{ $row->month }}</td>
         <td>{{ $row->total }}</td>
     </tr>
     @endforeach
 </table>
 
-<h3>Jumlah Stock Bahan Baku</h3>
-<table class="table">
-    <tr>
-        <th>Nama</th>
-        <th>Stok</th>
-        <th>Satuan</th>
-        <th>harga/satuan</th>
-    </tr>
-    @foreach($materials as $material)
-        <tr>
-            <td>{{ $material->name }}</td>
-            <td>{{ $material->stock }}</td>
-            <td>{{ $material->unit }}</td>
-            <td>Rp.{{ $material->price}}</td>
-        </tr>
-    @endforeach
-</table>
+<canvas id="productionPerMonthChart" height="100"></canvas>
 
-<h3>Bahan Baku Hampir Habis</h3>
-<table class="table">
-    <tr>
-        <th>Nama</th>
-        <th>Stok</th>
-    </tr>
-    @forelse($lowStockMaterials as $material)
-        @php
-            $in = $material->stockMovements()->in()->sum('qty');
-            $out = $material->stockMovements()->out()->sum('qty');
-        @endphp
-        <tr>
-            <td>{{ $material->name }}</td>
-            <td>{{ $in - $out }}</td>
-        </tr>
-    @empty
-        <tr><td colspan="2">Aman</td></tr>
-    @endforelse
-</table>
+<hr>
 
+{{-- PRODUK TERBANYAK --}}
 <h3>Produk Paling Sering Diproduksi</h3>
+
 <table class="table">
     <tr>
         <th>Produk</th>
@@ -75,4 +65,79 @@
     </tr>
     @endforeach
 </table>
+
+<canvas id="topProductChart" height="100"></canvas>
+
+<hr>
+
+{{-- PRODUKSI TERAKHIR --}}
+<h3>Produksi Terakhir</h3>
+
+<table class="table">
+    <tr>
+        <th>Tanggal</th>
+        <th>Produk</th>
+        <th>Qty</th>
+    </tr>
+    @foreach($recentProductions as $prod)
+    <tr>
+        <td>{{ $prod->production_date }}</td>
+        <td>{{ $prod->product->name }}</td>
+        <td>{{ $prod->qty }}</td>
+    </tr>
+    @endforeach
+</table>
+
+{{-- CHART.JS --}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+/**
+ * PRODUKSI PER BULAN
+ */
+const productionMonthCtx = document.getElementById('productionPerMonthChart');
+
+new Chart(productionMonthCtx, {
+    type: 'bar',
+    data: {
+        labels: [
+            @foreach($productionChart as $row)
+                'Bulan {{ $row->month }}',
+            @endforeach
+        ],
+        datasets: [{
+            label: 'Total Produksi',
+            data: [
+                @foreach($productionChart as $row)
+                    {{ $row->total }},
+                @endforeach
+            ]
+        }]
+    }
+});
+
+/**
+ * PRODUK PALING SERING DIPRODUKSI
+ */
+const topProductCtx = document.getElementById('topProductChart');
+
+new Chart(topProductCtx, {
+    type: 'bar',
+    data: {
+        labels: [
+            @foreach($topProducts as $row)
+                '{{ $row->product->name }}',
+            @endforeach
+        ],
+        datasets: [{
+            label: 'Total Produksi',
+            data: [
+                @foreach($topProducts as $row)
+                    {{ $row->total }},
+                @endforeach
+            ]
+        }]
+    }
+});
+</script>
 @endsection

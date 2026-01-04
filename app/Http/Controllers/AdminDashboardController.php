@@ -14,6 +14,11 @@ class AdminDashboardController extends Controller
     {
         $totalProducts = Product::count();
         $totalMaterials = RawMaterial::count();
+
+        $recentProductions = ProductionOrder::with('product')
+            ->latest()
+            ->take(5)
+            ->get();
      
         $totalProductionThisMonth = ProductionOrder::whereMonth('production_date', now()->month)
             ->whereYear('production_date', now()->year)
@@ -28,9 +33,6 @@ class AdminDashboardController extends Controller
             ->orderBy('month')
             ->get();
 
-         // low stock
-         $lowStockMaterials = RawMaterial::all()
-         ->filter(fn ($material) => $material->stock < 10);
 
          // total stok
          $materials = RawMaterial::all();
@@ -50,9 +52,9 @@ class AdminDashboardController extends Controller
             'totalMaterials',
             'totalProductionThisMonth',
             'productionChart',
-            'lowStockMaterials',
             'materials',
-            'topProducts'
+            'topProducts',
+            'recentProductions'
         ));
     }
 }

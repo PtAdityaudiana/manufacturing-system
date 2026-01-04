@@ -28,6 +28,11 @@ body {
     width: 200px;
 }
 
+.card-link {
+    text-decoration: none;
+    color: #000000;
+}
+
 .table {
     width: 100%;
     background: white;
@@ -54,6 +59,16 @@ body {
     color: white;
     border: none;
     padding: 6px 10px;
+}
+
+.btn:hover, .btn-danger:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+a {
+    color: #000000;
+    text-decoration: none;
 }
 
 .alert-success {
