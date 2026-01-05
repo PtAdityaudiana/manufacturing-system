@@ -46,9 +46,7 @@ class AdminMasterController extends Controller
             ->with('success', 'Bahan baku berhasil ditambahkan');
     }
 
-    /**
-     * Tambah / Kurangi stok
-     */
+
     public function rawMaterialStock(Request $request, RawMaterial $material)
     {
         $request->validate([
@@ -57,7 +55,7 @@ class AdminMasterController extends Controller
             'description' => 'nullable'
         ]);
 
-        // validasi stok saat OUT
+        // validasi stok saat out
         if ($request->type === 'out' && $material->stock < $request->qty) {
             return back()->withErrors('Stok tidak mencukupi');
         }

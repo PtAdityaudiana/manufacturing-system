@@ -43,5 +43,7 @@
     @endforeach
 </table>
 
+<a href="{{ route('operator.report') }}">Laporan</a>
+
 
 @endsection

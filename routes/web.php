@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\OperatorDashboardController;
 use App\Http\Controllers\ProductionController;
 use App\Http\Controllers\AdminMasterController;
+use App\Http\Controllers\ReportController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -49,7 +50,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/admin/products', [AdminMasterController::class, 'productStore'])
             ->name('admin.products.store');
 
-
     });
 
     //op
@@ -61,6 +61,6 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('production', ProductionController::class)
             ->only(['index', 'create', 'store']);
 
-
+        Route::get('/operator/report', [ReportController::class, 'index'])->name('operator.report');
     });
 });

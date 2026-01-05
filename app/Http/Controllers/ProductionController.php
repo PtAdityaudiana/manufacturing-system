@@ -52,7 +52,6 @@ class ProductionController extends Controller
 
                 $qtyProduction = $request->qty;
 
-                // cek stok bahan baku
                 foreach ($product->boms as $bom) {
                     $material = $bom->rawMaterial;
                     $requiredQty = $bom->qty_required * $qtyProduction;
@@ -68,14 +67,14 @@ class ProductionController extends Controller
                     }
                 }
 
-                // simpan order
+         
                 $production = ProductionOrder::create([
                     'product_id' => $product->id,
                     'qty' => $qtyProduction,
                     'production_date' => $request->production_date
                 ]);
 
-                // kurangi stok bahan baku
+            
                 foreach ($product->boms as $bom) {
                     $material = $bom->rawMaterial;
                     $usedQty = $bom->qty_required * $qtyProduction;
@@ -88,7 +87,7 @@ class ProductionController extends Controller
                         'description' => "Pemakaian {$material->name} untuk produksi {$product->name} ({$qtyProduction})"
                     ]);
                 }
-                // tambah stok produk jadi
+                
                 StockMovement::create([
                     'item_type' => 'product',
                     'item_id' => $product->id,

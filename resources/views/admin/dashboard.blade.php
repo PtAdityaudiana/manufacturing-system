@@ -92,9 +92,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-/**
- * PRODUKSI PER BULAN
- */
 const productionMonthCtx = document.getElementById('productionPerMonthChart');
 
 new Chart(productionMonthCtx, {
@@ -116,9 +113,6 @@ new Chart(productionMonthCtx, {
     }
 });
 
-/**
- * PRODUK PALING SERING DIPRODUKSI
- */
 const topProductCtx = document.getElementById('topProductChart');
 
 new Chart(topProductCtx, {
