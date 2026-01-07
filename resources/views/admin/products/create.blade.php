@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title','Tambah Produk')
 @section('content')
-<button class="btn"><a href="{{ route('admin.dashboard') }}">back</a></button>
+<a class="btn"href="{{ route('admin.dashboard') }}">back</a>
 <h2>Tambah Produk</h2>
 <form method="POST" action="{{ route('admin.products.store') }}">
 @csrf
@@ -17,7 +17,21 @@
     </div>
 @endforeach
 
-<button>Simpan</button>
+<button class="btn">Simpan</button>
 </form>
+
+<h3>Produk yang tersedia saat ini</h3>
+<table class="table">
+    <tr>
+        <th>Produk</th>
+        <th>Harga</th>
+    </tr>
+    @foreach($products as $product)
+    <tr>
+        <td>{{ $product->name }}</td>
+        <td>Rp.{{ $product->price }}</td>
+    </tr>
+    @endforeach
+</table>
 
 @endsection

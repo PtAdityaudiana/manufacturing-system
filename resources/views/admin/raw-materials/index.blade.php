@@ -2,11 +2,11 @@
 @section('title','RawMaterial Management')
 
 @section('content')
-<button class="btn"><a href="{{ route('admin.dashboard') }}">back</a></button>
+<a class="btn" href="{{ route('admin.dashboard') }}">back</a>
 
 
 <h2>Jumlah Stock Bahan Baku</h2>
-<a href="{{ route('admin.raw-materials.create') }}">+ Tambah Bahan Baku Baru</a>
+<a class= "btn" href="{{ route('admin.raw-materials.create') }}">+ Tambah Bahan Baku Baru</a>
 <table class="table">
 <tr>
     <th>Nama</th>

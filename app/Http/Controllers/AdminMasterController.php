@@ -83,13 +83,14 @@ class AdminMasterController extends Controller
     public function productIndex()
     {
         $products = Product::with('boms.rawMaterial')->get();
-        return view('admin.products.index', compact('products'));
+        return view('admin.products', compact('products'));
     }
 
     public function productCreate()
     {
         $materials = RawMaterial::all();
-        return view('admin.products.create', compact('materials'));
+        $products = Product::all();
+        return view('admin.products.create', compact('materials', 'products'));
     }
 
     public function productStore(Request $request)
@@ -124,7 +125,7 @@ class AdminMasterController extends Controller
             'description' => "Menambahkan produk: {$request->name} beserta BOM"
         ]);
 
-        return redirect()->route('admin.products.index')
+        return redirect()->route('admin.products')
             ->with('success', 'Produk & BOM berhasil dibuat');
     }
 }

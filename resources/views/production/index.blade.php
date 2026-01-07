@@ -2,7 +2,7 @@
 @section('title','Produksi')
 
 @section('content')
-<a href="{{ route('operator.dashboard') }}">back</a>
+<a class="btn" href="{{ route('operator.dashboard') }}">back</a>
 <h1>Data Produksi</h1>
 
 <a href="{{ route('production.create') }}" class="btn">+ Tambah Produksi</a>

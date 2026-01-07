@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title','Tambah Produksi')
 @section('content')
-<button class="btn"><a href="{{ route('production.index') }}">back</a></button>
+<a class="btn"href="{{ route('production.index') }}">back</a>
 <h1>Tambah Produksi</h1>
 
 @if($errors->any())

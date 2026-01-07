@@ -3,7 +3,7 @@
 
 @section('content')
 <h1>Operator Dashboard</h1>
-<a href="{{route('production.index')}}">production</a>
+<a class="btn"href="{{route('production.index')}}">production</a>
 
 <div class="grid">
     <div class="card">
@@ -43,7 +43,7 @@
     @endforeach
 </table>
 
-<a href="{{ route('operator.report') }}">Laporan</a>
+<a class="btn" href="{{ route('operator.report') }}">Laporan</a>
 
 
 @endsection
